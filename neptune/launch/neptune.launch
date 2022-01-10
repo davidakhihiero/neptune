@@ -1,0 +1,19 @@
+<launch>
+
+    <include file="$(find rplidar_ros)/launch/rplidar.launch"/> 
+
+    <node name="imu_node" type="imu_node.py" pkg="mpu_6050_driver"/>
+
+    <node name="motor_controller_rosserial_node" type="serial_node.py" pkg="rosserial_python" args="/dev/ttyACM0"/>
+
+    <node name="measure_pose" type="MeasurePose.py" pkg="neptune"/>
+
+    <node name="sensor_utils" type="SensorUtils.py" pkg="neptune"/>
+
+    <node name="mapping_node" type="BuildMap.py" pkg="neptune"/>
+
+    <node name="ekf_node" type="ExtendedKalmanFilter.py" pkg="neptune"/>
+
+    <!--<node name="pf_node" type="ParticleFilter.py" pkg="neptune"/>-->
+
+</launch>
