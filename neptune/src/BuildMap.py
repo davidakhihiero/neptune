@@ -29,7 +29,7 @@ lidar_ranges = [0]
 lidar_angles = [0]
 
 rate = None
-
+updating_map = False 
 
 def pub_map(ogm):
     """
@@ -56,7 +56,11 @@ def pub_map(ogm):
 
 
 def lidar_callback(msg):
-    global map_, pose_, lidar_ranges, lidar_angles
+    global map_, pose_, lidar_ranges, lidar_angles, updating_map
+
+    if updating_map:
+        return
+        
     ranges = msg.ranges
     angles = []
     angle_increment = msg.angle_increment
@@ -89,14 +93,16 @@ def pose_callback(msg):
 
 
 def start():
-    global rate, map_, pose_
+    global rate, map_, pose_, updating_map
     rospy.init_node("mapping_node", anonymous=True)
     rate = rospy.Rate(10)
     rospy.Subscriber("/neptune_EKF_pose", Pose, pose_callback)
     rospy.Subscriber("scan", LaserScan, lidar_callback)
     
     while True and not rospy.is_shutdown():
+        updating_map = True
         map_ = occupancy_grid_mapping(occ_grid_map=map_, ranges=lidar_ranges, scan_angles=lidar_angles, pose=pose_)
+        updating_map = False
         pub_map(map_)
         rate.sleep()
   

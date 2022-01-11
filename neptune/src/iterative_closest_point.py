@@ -2,7 +2,7 @@ import numpy as np
 from sklearn.neighbors import NearestNeighbors
 
 
-def iterative_closest_point(old_pose, old_points, new_points, max_iter=100, max_dist=0.12, max_translation_error=1e-3,
+def iterative_closest_point(old_pose, old_points, new_points, max_iter=100, max_dist=0.3, max_translation_error=1e-3,
                             max_rotation_error=1e-6, min_point_pairs=10):
     """
     Function to calculate the current pose from an initial pose by using the point clouds at the different poses

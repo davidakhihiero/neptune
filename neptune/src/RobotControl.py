@@ -144,6 +144,8 @@ def slam():
             vel_pub.publish(twist_msg)
             rate.sleep()
         stop()
+    
+        # break
 
 
 if __name__ == "__main__":
